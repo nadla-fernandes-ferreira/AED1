@@ -1,32 +1,29 @@
-#include <iostream>
-#include <vector>
-#include <set>
-
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 bool contemDe1a9(int* elementos) {
-    set<int> s;
+    bool seen[10] = { false };
     for (int i = 0; i < 9; i++) {
-        if (elementos[i] < 1 || elementos[i] > 9) return false;
-        s.insert(elementos[i]);
+        int v = elementos[i];
+        if (v < 1 || v > 9 || seen[v])
+            return false;
+        seen[v] = true;
     }
-    return s.size() == 9;
+    return true;
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
     int N;
-    cin >> N;
+    scanf("%d", &N);
 
     for (int instancia = 1; instancia <= N; instancia++) {
         // Alocação dinâmica da matriz 9x9
-        int** mat = new int*[9];
+        int** mat = malloc(9 * sizeof(int*));
         for (int i = 0; i < 9; i++) {
-            mat[i] = new int[9];
+            mat[i] = malloc(9 * sizeof(int));
             for (int j = 0; j < 9; j++) {
-                cin >> mat[i][j];
+                scanf("%d", &mat[i][j]);
             }
         }
 
@@ -62,15 +59,15 @@ int main() {
             }
         }
 
-        cout << "Instancia " << instancia << "\n";
-        cout << (valido ? "SIM" : "NAO") << "\n";
-        if (instancia < N) cout << "\n";
+        printf("Instancia %d\n", instancia);
+        printf(valido ? "SIM\n" : "NAO\n");
+        if (instancia < N) printf("\n");
 
         // Liberar memória
         for (int i = 0; i < 9; i++) {
-            delete[] mat[i];
+            free(mat[i]);
         }
-        delete[] mat;
+        free(mat);
     }
 
     return 0;
